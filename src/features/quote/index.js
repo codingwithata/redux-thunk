@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
 import {
-  // import fetchQuote() here
+  fetchQuote,
   selectError,
   selectLoading,
   selectQuote,
@@ -12,9 +13,14 @@ export default function Quote() {
   const { quote, author } = useSelector(selectQuote);
   const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
-  // Get a reference to the dispatch() function here
+  const dispatch = useDispatch();
 
-  // Add useEffect() here
+  useEffect(() => {
+    async function loadQuote() {
+      await dispatch(fetchQuote());
+    }
+    loadQuote();
+  }, [dispatch]);
 
   let render;
   if (loading) {

@@ -7,7 +7,7 @@ export const fetchQuote = createAsyncThunk(
     const { data } = await response.json();
     return data;
   }
-)
+);
 const initialState = {
   quote: '',
   loading: false,
@@ -18,6 +18,21 @@ const options = {
   name: 'quote',
   initialState,
   reducers: {},
+  extraReducers: {
+    [fetchQuote.pending]: (state) => {
+      state.loading = true;
+      state.error = false;
+    },
+    [fetchQuote.fulfilled]: (state, { payload: { quote, author } }) => {
+      state.quote = { quote, author };
+      state.loading = false;
+      state.error = false;
+    },
+    [fetchQuote.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = true;
+    },
+  },
 };
 
 const quoteSlice = createSlice(options);
